@@ -21,10 +21,9 @@ var RecipeApp = function () {
     //id's for ingredients
     var ingId = 0;
 
-    var _findRecipeIndexById = function(postId) {
-        for (let i=0;  i< recipes.length; i++) {
+    var _findRecipeIndexById = function (postId) {
+        for (let i = 0; i < recipes.length; i++) {
             if (recipes[i].id === postId) {
-                console.log(i);
                 return i;
             }
         }
@@ -47,23 +46,18 @@ var RecipeApp = function () {
     var createIngredients = function (text, postId) {
         let newIngredient = {
             name: text
-        } ;
+        };
         let i = _findRecipeIndexById(postId);
         recipes[i].ingredients.push(newIngredient);
     };
 
     var _getIngredientsHTML = function (recipe) {
         var recipesHTML = "";
-        // for (let i in recipes) {
-        //     if (recipes[i].id === $(this).closest('.recipe').data.id) {
-        //         recipes.forEach(function (ingredients) {
-        //             $('ul .ingredients').append('<li>' + recipes[i].ingredients + '</li>')
-        //         })
-        //     }
-        // }
-
-
-        //add code
+        for (let j = 0; j < recipe.ingredients.length; j++) {
+            let ingredient = recipe.ingredients[j].name;
+            let ingredientHTML = '<li class="ingredient">' + ingredient + '</li>';
+            recipesHTML += ingredientHTML;
+        }
         return recipesHTML;
     };
 
@@ -76,7 +70,7 @@ var RecipeApp = function () {
             var recipe = recipes[i];
 
             //return HTML for all ingredients
-            var ingredients = _getIngredientsHTML(); //add code
+            var ingredients = _getIngredientsHTML(recipe); //add code
 
             $recipes.append(
                 '<div class="recipe col-md-6  offset-md-3 img-fluid shadow" data-id="' + recipe.id + '">' +
@@ -97,44 +91,32 @@ var RecipeApp = function () {
         }
         ;
     }
-        return {
-            createRecipe: createRecipe,
-            renderRecipes: renderRecipes,
-            createIngredients: createIngredients,
-            }
+    return {
+        createRecipe: createRecipe,
+        renderRecipes: renderRecipes,
+        createIngredients: createIngredients,
+    }
 }
-    var app = RecipeApp();
+var app = RecipeApp();
 
 
-    //--------EVENTS
+//--------EVENTS
 
-    //add a recipe
-    $('.add-recipe').on('click', function () {
-        //collect input text
-        var name = $('#recipe-name').val();
-        var image = $('#recipe-image').val();
+//add a recipe
+$('.add-recipe').on('click', function () {
+    //collect input text
+    var name = $('#recipe-name').val();
+    var image = $('#recipe-image').val();
 
-        //add recipe to array and render
-        app.createRecipe(name, image);
-        app.renderRecipes();
-    });
+    //add recipe to array and render
+    app.createRecipe(name, image);
+    app.renderRecipes();
+});
 
-    // let addIngredient = function (text, ){
-    //     var closestPost = ('.add-ingredients').closest('recipe')
-    //     for (let value of recipes) {
-    //         if (recipes[i].id === id) {
-    //             recipes.push()
-    //         }
-    //     }
-    //     $('.recipe'.id).find('.add-ingredients')
-
-    // }
-    $('.recipes').on('click', '.add-ingredients', function() {
-        let text = $(this).closest('.input-group').find('#basic-url').val();
-        let postId = $(this).closest('.recipe').data().id;
-        console.log(postId, text)
-    // let newIngredient = $('.ingredients').closest('form-control')
+$('.recipes').on('click', '.add-ingredients', function () {
+    let text = $(this).closest('.input-group').find('#basic-url').val();
+    let postId = $(this).closest('.recipe').data().id;
     app.createIngredients(text, postId);
-
+    app.renderRecipes();
 })
 
