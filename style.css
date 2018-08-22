@@ -11,4 +11,11 @@
 
 .ingredients{
     margin-left: 30px;
+
+}
+
+.remove-recipe{
+  
+    display: inline-block;
+    
 }

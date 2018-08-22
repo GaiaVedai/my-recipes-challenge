@@ -86,15 +86,26 @@ var RecipeApp = function () {
 
                 '</div>' +
                 '<ul class="ingredients">' + ingredients + '</ul>' +
+                '<div type="button" class="remove-recipe">remove recipe</div>' +
                 '</div>'
             );
         }
         ;
     }
+    let removeRecipe = function ($currentRecipe) {
+        let i = _findRecipeIndexById($currentRecipe);
+        recipes.splice(i, 1)
+        renderRecipes()
+
+    }
+
+
     return {
+        recipes,
         createRecipe: createRecipe,
         renderRecipes: renderRecipes,
         createIngredients: createIngredients,
+        removeRecipe: removeRecipe
     }
 }
 var app = RecipeApp();
@@ -119,4 +130,11 @@ $('.recipes').on('click', '.add-ingredients', function () {
     app.createIngredients(text, postId);
     app.renderRecipes();
 })
+
+$('.recipes').on('click', '.remove-recipe', function () {
+    let $currentRecipe = $(this).closest('.recipe').data().id;
+    app.removeRecipe($currentRecipe);
+
+
+});
 
